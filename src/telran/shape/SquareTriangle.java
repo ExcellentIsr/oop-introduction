@@ -3,7 +3,7 @@ package telran.shape;
 public class SquareTriangle extends Square {
 	private boolean isLeftDiagonal;
 
-	public SquareTriangle(int width, boolean isLeftDiagonal) {
+	protected SquareTriangle(int width, boolean isLeftDiagonal) {
 		super(width);
 		this.isLeftDiagonal = isLeftDiagonal;
 	}
