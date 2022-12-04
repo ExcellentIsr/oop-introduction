@@ -1,21 +1,13 @@
 package telran.shape;
 
-public class SquareTriangle extends Square{
-	private static boolean isLeftDiagonal;
-	
+public class SquareTriangle extends Square {
+	private boolean isLeftDiagonal;
+
 	public SquareTriangle(int width, boolean isLeftDiagonal) {
 		super(width);
 		this.isLeftDiagonal = isLeftDiagonal;
 	}
-	
-	public static boolean getIsLeftDiagonal() {
-		return isLeftDiagonal;
-	}
 
-	public static void setIsLeftDiagonal(boolean isLeftDiagonal) {
-		SquareTriangle.isLeftDiagonal = isLeftDiagonal;
-	}
-	
 	public String[] presentation(int offset) {
 		String res[] = new String[getWidth()];
 		String line = getLine(offset);
@@ -27,10 +19,10 @@ public class SquareTriangle extends Square{
 		res[lastLine] = line;
 		return res;
 	}
-	
+
 	private String getMiddleLine(int offset, int i) {
 		String leftOffset = getOffset(offset) + symbol + getOffset(i - 1) + symbol;
 		String rightOffset = getOffset(offset) + getOffset(getWidth() - i - 1) + symbol + getOffset(i - 1) + symbol;
-		return isLeftDiagonal ? leftOffset : rightOffset;
+		return this.isLeftDiagonal ? leftOffset : rightOffset;
 	}
 }
