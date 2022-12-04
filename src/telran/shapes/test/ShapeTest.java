@@ -6,7 +6,7 @@ import telran.shape.*;
 class ShapeTest {
 
 	@Test
-	void rectangleTest() {
+	void shapesTest() {
 		Rectangle rectangle = new Rectangle(15, 4);
 		displayStrings(rectangle.presentation(20));
 		

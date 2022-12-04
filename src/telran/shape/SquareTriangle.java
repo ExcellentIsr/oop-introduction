@@ -25,4 +25,8 @@ public class SquareTriangle extends Square {
 		String rightOffset = getOffset(offset) + getOffset(getWidth() - i - 1) + symbol + getOffset(i - 1) + symbol;
 		return this.isLeftDiagonal ? leftOffset : rightOffset;
 	}
+
+	public boolean getIsLeftDiagonal() {
+		return this.isLeftDiagonal;
+	}
 }
