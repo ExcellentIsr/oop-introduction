@@ -16,7 +16,6 @@ public class BaseCipher {
 
 		while (number >= lenght) {
 			res = keyArray[number - ((int) (number / lenght) * lenght)] + res;
-			;
 			number /= lenght;
 		}
 
