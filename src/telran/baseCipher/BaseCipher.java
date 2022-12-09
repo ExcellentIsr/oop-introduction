@@ -40,12 +40,12 @@ public class BaseCipher {
 						j++;
 					}
 				}
-				if(!find) {
+				if (!find) {
 					res = -1;
 					break;
 				}
 			}
-		}else {
+		} else {
 			res = -1;
 		}
 		return res;
