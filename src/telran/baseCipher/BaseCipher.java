@@ -31,7 +31,8 @@ public class BaseCipher {
 		int cipherLength = cipher.length();
 
 		for (int i = 0; i < cipherLength; i++) {
-			int indexInCipher = helper[(int) cipher.charAt(i) - min];
+			int currentIndex = (int) cipher.charAt(i);
+			int indexInCipher = (currentIndex < min && currentIndex > max) ? -1 : helper[currentIndex - min];
 
 			if (indexInCipher > -1) {
 				res += indexInCipher * Math.pow(getLength(), cipherLength - 1 - i);

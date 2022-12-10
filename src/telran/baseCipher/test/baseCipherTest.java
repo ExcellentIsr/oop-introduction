@@ -25,8 +25,8 @@ public class baseCipherTest {
 		System.out.println(example.cipher(number));
 		System.out.println(example.decipher(example.cipher(number)));
 
-		assertEquals(-1, example.decipher("JV"));
-		assertEquals(-1, example.decipher("_ z.todb"));
+		assertEquals(-1, example.decipher("$€"));
+		assertEquals(-1, example.decipher("z.tod…b"));
 
 	}
 }
