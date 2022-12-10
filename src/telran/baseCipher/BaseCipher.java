@@ -10,7 +10,7 @@ public class BaseCipher {
 
 	public BaseCipher(int length) {
 		this.setLength(length);
-		this.key = generateKeys(getLength());
+		this.key = generateKeys(length);
 	}
 
 	public String cipher(int number) {
