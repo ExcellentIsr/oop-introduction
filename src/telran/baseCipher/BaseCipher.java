@@ -3,6 +3,7 @@ package telran.baseCipher;
 public class BaseCipher {
 	private int length;
 	private String key = "";
+	public byte[] helper;
 
 	public BaseCipher(int length) {
 		this.setLength(length);
@@ -19,53 +20,41 @@ public class BaseCipher {
 			number /= lenght;
 		}
 
-		return res + keyArray[number];
+		return keyArray[number] + res;
 	}
 
 	public int decipher(String cipher) {
 		int res = 0;
-		if (cipher.matches(cipherIsTrue())) {
-			String key = getKey();
-			int cipherLength = cipher.length();
+		String key = getKey();
+		int cipherLength = cipher.length();
 
-			for (int i = 0; i < cipherLength; i++) {
-				boolean find = false;
-				int j = 0;
-				while (!find && j < key.length()) {
-					if (key.charAt(j) == cipher.charAt(i)) {
-						find = true;
-						res += j * Math.pow(getLength(), cipherLength - 1 - i);
-					} else {
-						j++;
-					}
-				}
-				if (!find) {
-					res = -1;
-					break;
-				}
+		for (int i = 0; i < cipherLength; i++) {
+			if (cipher.charAt(i) == key.charAt(helper[(int) cipher.charAt(i) - 33])) {
+				res += helper[(int) cipher.charAt(i) - 33] * Math.pow(getLength(), cipherLength - 1 - i);
+			} else {
+				res = -1;
+				break;
 			}
-		} else {
-			res = -1;
 		}
-		return res;
-	}
 
-	private String cipherIsTrue() {
-		return "[\\]\\[\\w\\!\\?\\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\@\\\\^\\}\\{\\|\\~\\`]*";
+		return res;
 	}
 
 	private String generateKeys(int length) {
 		String res = "";
 		int min = 33;
 		int max = 126;
-		boolean[] helper = new boolean[max - min + 1];
+		helper = new byte[max - min + 1];
+		for (int i = 0; i < helper.length; i++) {
+			helper[i] = -1;
+		}
 		int number = 0;
 
 		for (int i = 0; i < length; i++) {
 			do {
 				number = (int) (Math.random() * (max - min + 1)) + min;
-			} while (helper[number - min]);
-			helper[number - min] = true;
+			} while (helper[number - min] > -1);
+			helper[number - min] = (byte) i;
 			res += (char) number;
 		}
 

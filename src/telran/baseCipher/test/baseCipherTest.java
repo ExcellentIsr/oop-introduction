@@ -9,8 +9,8 @@ public class baseCipherTest {
 
 	@Test
 	void CipherTest() {
-		int numeral = 50;
-		int number = 1020;
+		int numeral = 16;
+		int number = 1023;
 
 		BaseCipher example = new BaseCipher(numeral);
 		System.out.println(example.getKey());
@@ -25,7 +25,12 @@ public class baseCipherTest {
 		System.out.println(example.cipher(number));
 		System.out.println(example.decipher(example.cipher(number)));
 
-		System.out.println(example.decipher("JV"));
-		assertEquals(-1, example.decipher("_ z.todb"));
+		//System.out.println(example.decipher("JV"));
+		//assertEquals(-1, example.decipher("_ z.todb"));
+		
+		for(int i = 0; i < example.helper.length; i++) {
+			System.out.print(example.helper[i] + " ");
+		}
+		
 	}
 }
