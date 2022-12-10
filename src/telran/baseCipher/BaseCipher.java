@@ -3,7 +3,10 @@ package telran.baseCipher;
 public class BaseCipher {
 	private int length;
 	private String key = "";
-	public byte[] helper;
+	public int[] helper;
+
+	private int min = 33;
+	private int max = 126;
 
 	public BaseCipher(int length) {
 		this.setLength(length);
@@ -25,12 +28,13 @@ public class BaseCipher {
 
 	public int decipher(String cipher) {
 		int res = 0;
-		String key = getKey();
 		int cipherLength = cipher.length();
 
 		for (int i = 0; i < cipherLength; i++) {
-			if (cipher.charAt(i) == key.charAt(helper[(int) cipher.charAt(i) - 33])) {
-				res += helper[(int) cipher.charAt(i) - 33] * Math.pow(getLength(), cipherLength - 1 - i);
+			int indexInCipher = helper[(int) cipher.charAt(i) - min];
+
+			if (indexInCipher > -1) {
+				res += indexInCipher * Math.pow(getLength(), cipherLength - 1 - i);
 			} else {
 				res = -1;
 				break;
@@ -42,9 +46,7 @@ public class BaseCipher {
 
 	private String generateKeys(int length) {
 		String res = "";
-		int min = 33;
-		int max = 126;
-		helper = new byte[max - min + 1];
+		helper = new int[max - min + 1];
 		for (int i = 0; i < helper.length; i++) {
 			helper[i] = -1;
 		}
@@ -54,7 +56,7 @@ public class BaseCipher {
 			do {
 				number = (int) (Math.random() * (max - min + 1)) + min;
 			} while (helper[number - min] > -1);
-			helper[number - min] = (byte) i;
+			helper[number - min] = i;
 			res += (char) number;
 		}
 
