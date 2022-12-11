@@ -69,13 +69,10 @@ public class BaseCipher {
 	}
 
 	public void setLength(int length) {
-		if (length < 2) {
-			this.length = 2;
-		} else if (length > 94) {
-			this.length = 94;
-		} else {
-			this.length = length;
-		}
+
+		this.length = length < 2 ? 2 : length;
+		this.length = length > 94 ? 94 : length;
+		
 	}
 
 	public String getKey() {
