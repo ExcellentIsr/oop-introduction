@@ -3,10 +3,10 @@ package telran.baseCipher;
 public class BaseCipher {
 	private int length;
 	private String key = "";
-	public int[] helper;
 
 	private int min = 33;
 	private int max = 126;
+	public int[] helper = new int[max - min + 1];
 
 	public BaseCipher(int length) {
 		this.setLength(length);
@@ -15,15 +15,14 @@ public class BaseCipher {
 
 	public String cipher(int number) {
 		String res = "";
-		char[] keyArray = getKey().toCharArray();
 		int lenght = getLength();
 
 		while (number >= lenght) {
-			res = keyArray[number - ((int) (number / lenght) * lenght)] + res;
+			res = key.charAt(number%length) + res;
 			number /= lenght;
 		}
 
-		return keyArray[number] + res;
+		return key.charAt(number) + res;
 	}
 
 	public int decipher(String cipher) {
@@ -32,7 +31,7 @@ public class BaseCipher {
 
 		for (int i = 0; i < cipherLength; i++) {
 			int currentIndex = (int) cipher.charAt(i);
-			int indexInCipher = (currentIndex < min && currentIndex > max) ? -1 : helper[currentIndex - min];
+			int indexInCipher = (currentIndex < min || currentIndex > max) ? -1 : helper[currentIndex - min];
 
 			if (indexInCipher > -1) {
 				res += indexInCipher * Math.pow(getLength(), cipherLength - 1 - i);
@@ -44,24 +43,27 @@ public class BaseCipher {
 
 		return res;
 	}
-
 	private String generateKeys(int length) {
 		String res = "";
-		helper = new int[max - min + 1];
 		for (int i = 0; i < helper.length; i++) {
 			helper[i] = -1;
 		}
-		int number = 0;
 
 		for (int i = 0; i < length; i++) {
-			do {
-				number = (int) (Math.random() * (max - min + 1)) + min;
-			} while (helper[number - min] > -1);
-			helper[number - min] = i;
-			res += (char) number;
+			res += getUniqueRandomChar(i);
 		}
-
 		return res;
+	}
+
+	private char getUniqueRandomChar(int i) {
+		int rand;
+		do {
+			rand = (int) (min + Math.random() * (max - min + 1));
+		} while (helper[rand - min] > -1);
+
+		helper[rand - min] = i;
+
+		return (char) rand;
 	}
 
 	public int getLength() {
@@ -69,10 +71,8 @@ public class BaseCipher {
 	}
 
 	public void setLength(int length) {
-
 		this.length = length < 2 ? 2 : length;
 		this.length = length > 94 ? 94 : length;
-		
 	}
 
 	public String getKey() {
