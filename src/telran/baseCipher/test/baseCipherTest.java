@@ -9,7 +9,7 @@ public class baseCipherTest {
 
 	@Test
 	void CipherTest() {
-		int numeral = 95;
+		int numeral = 16;
 		int number = 1023;
 
 		BaseCipher example = new BaseCipher(numeral);
