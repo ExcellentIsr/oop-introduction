@@ -7,24 +7,21 @@ class ShapeTest {
 
 	@Test
 	void shapesTest() {
-		Rectangle rectangle = new Rectangle(15, 4);
-		displayStrings(rectangle.presentation(20));
+		Shape rectangle = new Rectangle(15, 20);
+		Shape square = new Square(12);
+		Shape squareLeftTriangle = new SquareLeftTriangle(15);
+		Shape squareRightTriangle = new SquareRightTriangle(20);
 		
-		Rectangle square = new Square(5);
-		displayStrings(square.presentation(20));
-		
-		Rectangle squareLeftTriangle = new SquareLeftTriangle(10);
-		squareLeftTriangle.setWidth(12);
-		displayStrings(squareLeftTriangle.presentation(20));
-
-		Rectangle squareRightTriangle = new SquareRightTriangle(10);
-		squareRightTriangle.setWidth(8);
-		displayStrings(squareRightTriangle.presentation(20));
-
-		Rectangle.setSymbol("#");
-		displayStrings(squareLeftTriangle.presentation(20));
-		displayStrings(squareRightTriangle.presentation(20));
+		Shape[] shapes = {rectangle, square, squareLeftTriangle, squareRightTriangle};
+		Canvas canvas = new Canvas(5, 10, shapes);
+		canvas.setMargin(3);
+		displayStrings(canvas.presentation(10));
+		canvas.setDirection("column");
+		displayStrings(canvas.presentation(10));
+		canvas.setDirection("row");
+		displayStrings(canvas.presentation(10));
 	}
+
 
 	private void displayStrings(String strings[]) {
 		for (String str : strings) {
