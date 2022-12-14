@@ -3,8 +3,6 @@ package telran.shape;
 import java.util.Arrays;
 
 public class Canvas extends Shape {
-	private Shape[] copyShapes;
-
 	private Shape[] shapes;
 	private String direction = "row";
 	private int margin = 5;
@@ -12,7 +10,6 @@ public class Canvas extends Shape {
 	public Canvas(int width, int height, Shape[] shapes) {
 		super(width, height);
 		this.shapes = shapes;
-		this.copyShapes = shapes;
 	}
 
 	private void changeHeight(int height, Shape[] shapes) {
@@ -29,45 +26,51 @@ public class Canvas extends Shape {
 
 	@Override
 	public String[] presentation(int offset) {
+		Shape[] copyShapes = shapes.clone();
 		String[] res;
-
-		copyShapes = Arrays.copyOf(shapes, shapes.length);
-		int shapeHeight = getHeight();
-
 		if (direction == "row") {
 			changeHeight(getHeight(), copyShapes);
-			res = new String[shapeHeight];
+			res = new String[getHeight()];
 		} else {
 			changeWidth(getWidth(), copyShapes);
-			res = new String[getHeightAllSHapes(copyShapes) + (copyShapes.length - 1)];
+			res = new String[getHeightAllShapes(copyShapes) + (copyShapes.length - 1)];
 		}
 		Arrays.fill(res, getOffset(offset));
 
 		if (direction == "row") {
-			for (Shape shape : copyShapes) {
-				String[] helper = shape.presentation(offset);
-				for (int i = 0; i < shapeHeight; i++) {
-					res[i] += (shape == copyShapes[copyShapes.length - 1]) ? helper[i] : helper[i] + getStringMargin();
-				}
-			}
+			buildShapesRow(res, copyShapes, offset);
 		} else {
-			int j = 0;
-			for (Shape shape : copyShapes) {
-				String[] helper = shape.presentation(offset);
-				int shapeLength = helper.length;
-
-				for (int i = 0; i < shapeLength; i++, j++) {
-					res[j] += helper[i];
-				}
-				if (shape != copyShapes[copyShapes.length - 1]) {
-					res[j++] = getStringMargin();
-				}
-			}
+			buildShapesColumn(res, copyShapes, offset);
 		}
 		return res;
 	}
 
-	private int getHeightAllSHapes(Shape[] shapes) {
+	private void buildShapesColumn(String[] res, Shape[] shapes, int offset) {
+		int j = 0;
+		for (Shape shape : shapes) {
+			String[] helper = shape.presentation(0);
+			int shapeLength = helper.length;
+
+			for (int i = 0; i < shapeLength; i++, j++) {
+				res[j] += helper[i];
+			}
+			if (shape != shapes[shapes.length - 1]) {
+				res[j++] = getStringMargin();
+			}
+		}
+
+	}
+
+	private void buildShapesRow(String[] res, Shape[] shapes, int offset) {
+		for (Shape shape : shapes) {
+			String[] helper = shape.presentation(0);
+			for (int i = 0; i < getHeight(); i++) {
+				res[i] += (shape.equals(shapes[shapes.length - 1])) ? helper[i] : helper[i] + getStringMargin();
+			}
+		}
+	}
+
+	private int getHeightAllShapes(Shape[] shapes) {
 		int res = 0;
 		for (Shape shape : shapes) {
 			res += shape.getHeight();

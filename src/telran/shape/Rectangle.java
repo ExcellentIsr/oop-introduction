@@ -27,5 +27,4 @@ public class Rectangle extends Shape {
 		return symbol.repeat(getWidth());
 	}
 
-	
 }

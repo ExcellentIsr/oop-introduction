@@ -13,7 +13,7 @@ public abstract class Shape {
 	public static void setSymbol(String symbol) {
 		Shape.symbol = symbol;
 	}
-	
+
 	public Shape(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -34,10 +34,11 @@ public abstract class Shape {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
+
 	protected String getOffset(int offset) {
 		return " ".repeat(offset);
 	}
-	
+
 	abstract public String[] presentation(int offset);
+
 }

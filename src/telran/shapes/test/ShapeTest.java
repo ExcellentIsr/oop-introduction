@@ -8,11 +8,12 @@ class ShapeTest {
 	@Test
 	void shapesTest() {
 		Shape rectangle = new Rectangle(15, 20);
+		Shape rectangle1 = new Rectangle(10, 15);
 		Shape square = new Square(12);
 		Shape squareLeftTriangle = new SquareLeftTriangle(15);
 		Shape squareRightTriangle = new SquareRightTriangle(20);
-		
-		Shape[] shapes = {rectangle, square, squareLeftTriangle, squareRightTriangle};
+
+		Shape[] shapes = { rectangle, square, squareLeftTriangle, squareRightTriangle, rectangle1 };
 		Canvas canvas = new Canvas(5, 10, shapes);
 		canvas.setMargin(3);
 		displayStrings(canvas.presentation(10));
@@ -21,7 +22,6 @@ class ShapeTest {
 		canvas.setDirection("row");
 		displayStrings(canvas.presentation(10));
 	}
-
 
 	private void displayStrings(String strings[]) {
 		for (String str : strings) {
