@@ -8,8 +8,6 @@ public class MemoryOperation {
 		int high = Integer.MAX_VALUE;
 		int middle = high / 2;
 		
-		boolean running = true;
-		
 		while (low <= high) {
 			try {
 				byte[] ar = new byte[middle];

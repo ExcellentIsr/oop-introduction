@@ -21,13 +21,5 @@ class MemoryOperationTest {
 			flException = true;
 		}
 		assertTrue(flException);
-		
-		boolean flException1 = false;
-		try {
-			ar = new byte[maxMemory];
-		}catch(Throwable e) {
-			flException = true;
-		}
-		assertFalse(flException1);
 	}
 }
