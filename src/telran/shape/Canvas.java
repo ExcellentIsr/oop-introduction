@@ -12,74 +12,68 @@ public class Canvas extends Shape {
 		this.shapes = shapes;
 	}
 
-	private void changeHeight(int height, Shape[] shapes) {
-		for (Shape shape : shapes) {
-			shape.setHeight(height);
-		}
-	}
-
-	private void changeWidth(int width, Shape[] shapes) {
-		for (Shape shape : shapes) {
-			shape.setWidth(width);
-		}
+	@Override
+	public int getHeight() {
+		return direction.equals("row") ? super.getHeight() : (getHeightAllShapes() + margin * (shapes.length - 1));
 	}
 
 	@Override
 	public String[] presentation(int offset) {
-		Shape[] copyShapes = shapes.clone();
-		String[] res;
-		if (direction == "row") {
-			changeHeight(getHeight(), copyShapes);
-			res = new String[getHeight()];
-		} else {
-			changeWidth(getWidth(), copyShapes);
-			res = new String[getHeightAllShapes(copyShapes) + (copyShapes.length - 1)];
+		for (Shape shape : shapes) {
+			if (shape instanceof Canvas) {
+				((Canvas) shape).setDirection(direction);
+			}
 		}
-		Arrays.fill(res, getOffset(offset));
+		return (direction == "row") ? buildShapesRow(shapes, offset) : buildShapesColumn(shapes, offset);
+	}
 
-		if (direction == "row") {
-			buildShapesRow(res, copyShapes, offset);
+	private String[] getPresintationShape(int index, int offset) {
+		if (direction.equals("row")) {
+			shapes[index].setHeight(getHeight());
 		} else {
-			buildShapesColumn(res, copyShapes, offset);
+			shapes[index].setWidth(getWidth());
+		}
+		return shapes[index].presentation(offset);
+	}
+
+	private String[] buildShapesRow(Shape[] shapes, int offset) {
+		String[] res = getPresintationShape(0, offset);
+		for (int j = 1; j < shapes.length; j++) {
+			String[] helper = getPresintationShape(j, margin);
+			sumShapeInRow(res, helper);
 		}
 		return res;
 	}
 
-	private void buildShapesColumn(String[] res, Shape[] shapes, int offset) {
-		int j = 0;
-		for (Shape shape : shapes) {
-			String[] helper = shape.presentation(0);
-			int shapeLength = helper.length;
+	private String[] buildShapesColumn(Shape[] shapes, int offset) {
+		String[] res = new String[getHeightAllShapes() + (shapes.length - 1) * margin];
+		Arrays.fill(res, "");
 
-			for (int i = 0; i < shapeLength; i++, j++) {
-				res[j] += helper[i];
-			}
-			if (shape != shapes[shapes.length - 1]) {
-				res[j++] = getStringMargin();
-			}
+		int lenght = sumShapeInColumn(0, res, getPresintationShape(0, offset));
+
+		for (int j = 1; j < shapes.length; j++) {
+			lenght = sumShapeInColumn(lenght, res, getPresintationShape(j, offset));
 		}
-
+		return res;
 	}
 
-	private void buildShapesRow(String[] res, Shape[] shapes, int offset) {
-		for (Shape shape : shapes) {
-			String[] helper = shape.presentation(0);
-			for (int i = 0; i < getHeight(); i++) {
-				res[i] += (shape.equals(shapes[shapes.length - 1])) ? helper[i] : helper[i] + getStringMargin();
-			}
+	private int sumShapeInColumn(int lenght, String[] res, String[] helper) {
+		System.arraycopy(helper, 0, res, lenght, helper.length);
+		return lenght + helper.length + margin;
+	}
+
+	private void sumShapeInRow(String[] res, String[] helper) {
+		for (int i = 0; i < getHeight(); i++) {
+			res[i] += helper[i];
 		}
 	}
 
-	private int getHeightAllShapes(Shape[] shapes) {
+	private int getHeightAllShapes() {
 		int res = 0;
 		for (Shape shape : shapes) {
 			res += shape.getHeight();
 		}
 		return res;
-	}
-
-	private String getStringMargin() {
-		return direction == "row" ? getOffset(margin) : "\n".repeat(margin - 1);
 	}
 
 	public String getDirection() {

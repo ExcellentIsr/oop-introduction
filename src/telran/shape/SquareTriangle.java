@@ -12,7 +12,7 @@ public class SquareTriangle extends Square {
 		String res[] = new String[getWidth()];
 		String line = getLine(offset);
 		int lastLine = getHeight() - 1;
-		res[0] = isLeftDiagonal ? symbol + getOffset(getWidth() - 1) : getOffset(getWidth() - 1) + symbol;
+		res[0] = isLeftDiagonal ? getOffset(offset) + symbol + getOffset(getWidth() - 1) : getOffset(offset) + getOffset(getWidth() - 1) + symbol;
 		for (int i = 1; i < lastLine; i++) {
 			res[i] = isLeftDiagonal ? getLeftMiddleLine(offset, i) : getRightMiddleLine(offset, i);
 		}
@@ -21,11 +21,11 @@ public class SquareTriangle extends Square {
 	}
 
 	private String getLeftMiddleLine(int offset, int i) {
-		return symbol + getOffset(i - 1) + symbol + getOffset(getWidth() - i - 1);
+		return getOffset(offset) + symbol + getOffset(i - 1) + symbol + getOffset(getWidth() - i - 1);
 	}
 
 	private String getRightMiddleLine(int offset, int i) {
-		return getOffset(getWidth() - i - 1) + symbol + getOffset(i - 1) + symbol;
+		return getOffset(offset) + getOffset(getWidth() - i - 1) + symbol + getOffset(i - 1) + symbol;
 	}
 
 	public boolean getIsLeftDiagonal() {

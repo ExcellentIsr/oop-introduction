@@ -7,20 +7,18 @@ class ShapeTest {
 
 	@Test
 	void shapesTest() {
-		Shape rectangle = new Rectangle(15, 20);
-		Shape rectangle1 = new Rectangle(10, 15);
-		Shape square = new Square(12);
-		Shape squareLeftTriangle = new SquareLeftTriangle(15);
-		Shape squareRightTriangle = new SquareRightTriangle(20);
 
-		Shape[] shapes = { rectangle, square, squareLeftTriangle, squareRightTriangle, rectangle1 };
-		Canvas canvas = new Canvas(5, 10, shapes);
-		canvas.setMargin(3);
-		displayStrings(canvas.presentation(10));
-		canvas.setDirection("column");
-		displayStrings(canvas.presentation(10));
-		canvas.setDirection("row");
-		displayStrings(canvas.presentation(10));
+		Shape[] shapes = { new SquareLeftTriangle(5), new SquareRightTriangle(8) };
+		Canvas canvas = new Canvas(5, 7, shapes);
+
+		Shape[] shapes1 = { new Rectangle(5, 15), new Square(7), canvas };
+		Canvas canvas1 = new Canvas(10, 10, shapes1);
+		canvas1.setMargin(2);
+		displayStrings(canvas1.presentation(10));
+		canvas1.setDirection("column");
+		displayStrings(canvas1.presentation(10));
+		canvas1.setDirection("row");
+		displayStrings(canvas1.presentation(10));
 	}
 
 	private void displayStrings(String strings[]) {

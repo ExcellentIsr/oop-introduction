@@ -20,11 +20,11 @@ public class Rectangle extends Shape {
 	}
 
 	private String getMiddleLine(int offset) {
-		return symbol + getOffset(getWidth() - 2) + symbol;
+		return getOffset(offset) + symbol + getOffset(getWidth() - 2) + symbol;
 	}
 
 	protected String getLine(int offset) {
-		return symbol.repeat(getWidth());
+		return getOffset(offset) + symbol.repeat(getWidth());
 	}
 
 }
