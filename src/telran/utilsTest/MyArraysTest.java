@@ -30,8 +30,11 @@ class MyArraysTest {
 	@Test
 	void binarySearchStringTest() {
 		String[] strings = { "ab", "abm", "abma", "abmc" };
-		assertEquals(0, MyArrays.binarySearch(strings, "ab", new StringCompare()));
-		assertEquals(-4, MyArrays.binarySearch(strings, "abmb", new StringCompare()));
+		StringCompare comp = new StringCompare();
+		assertEquals(0, MyArrays.binarySearch(strings, "ab", comp));
+		assertEquals(2, MyArrays.binarySearch(strings, "abma", comp));
+		assertEquals(-1, MyArrays.binarySearch(strings, "a", comp));
+		assertEquals(-4, MyArrays.binarySearch(strings, "abmb", comp));
 	}
 
 }

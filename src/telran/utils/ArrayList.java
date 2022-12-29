@@ -112,7 +112,7 @@ public class ArrayList<T> implements List<T> {
 			ar = Arrays.copyOf(ar, size());
 			System.arraycopy(array, 0, ar, 0, size());
 		}
-		
+
 		return ar;
 	}
 
