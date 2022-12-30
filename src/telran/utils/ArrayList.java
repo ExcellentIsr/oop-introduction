@@ -32,7 +32,7 @@ public class ArrayList<T> implements List<T> {
 		if (size == array.length) {
 			reallocate();
 		}
-		System.arraycopy(array, index, array, index + 1, size() - index);
+		System.arraycopy(array, index, array, index + 1, size - index);
 		array[index] = element;
 		size++;
 	}
@@ -45,7 +45,7 @@ public class ArrayList<T> implements List<T> {
 	public boolean remove(T pattern) {
 		boolean res = false;
 		int i = 0;
-		while (i < size() && !res) {
+		while (i < size && !res) {
 			if (pattern.equals(get(i))) {
 				removeElement(i);
 				res = true;
@@ -66,7 +66,7 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		boolean res = false;
-		for (int i = 0; i < size(); i++) {
+		for (int i = 0; i < size; i++) {
 			if (predicate.test(get(i))) {
 				removeElement(i--);
 				res = true;
@@ -76,18 +76,15 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	private void removeElement(int index) {
-		if (index == size() - 1) {
-			set(index, null);
-		} else {
-			System.arraycopy(array, index + 1, array, index, size() - index - 1);
-		}
-		set(size() - 1, null);
 		size--;
+		set(index, null);
+		System.arraycopy(array, index + 1, array, index, size - index);
+		set(size, null);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return size() == 0 ? true : false;
+		return size == 0 ? true : false;
 	}
 
 	@Override
@@ -98,19 +95,19 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean contains(T pattern) {
 		int i = 0;
-		while (i < size() && !pattern.equals(get(i))) {
+		while (i < size && !pattern.equals(get(i))) {
 			i++;
 		}
-		return i < size();
+		return i < size;
 	}
 
 	@Override
 	public T[] toArray(T[] ar) {
-		if (ar.length >= size()) {
-			System.arraycopy(array, 0, ar, 0, size());
+		if (ar.length >= size) {
+			System.arraycopy(array, 0, ar, 0, size);
+			Arrays.fill(ar, size, ar.length, null);
 		} else {
-			ar = Arrays.copyOf(ar, size());
-			System.arraycopy(array, 0, ar, 0, size());
+			ar = Arrays.copyOf(array, size);
 		}
 
 		return ar;
@@ -121,7 +118,7 @@ public class ArrayList<T> implements List<T> {
 		int res = -1;
 		int i = 0;
 
-		while (i < size() && res < 0) {
+		while (i < size && res < 0) {
 			if (pattern.equals(get(i))) {
 				res = i;
 			}
@@ -132,7 +129,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public int lastIndexOf(T pattern) {
-		int i = size() - 1;
+		int i = size - 1;
 		while (i >= 0 && !pattern.equals(get(i))) {
 			i--;
 		}
@@ -152,8 +149,8 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	private void checkIndex(int index) {
-		if (index < 0 || index >= size()) {
-			throw new IndexOutOfBoundsException(String.format("IndexOutOfBounds %d but size %d", index, size()));
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException(String.format("IndexOutOfBounds %d but size %d", index, size));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package telran.utils;
 
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public class MyArrays {
 	public static <T> int binarySearch(T[] array, T searchedObj, Comparator<T> comp) {
@@ -44,5 +45,4 @@ public class MyArrays {
 		objects[i] = objects[i + 1];
 		objects[i + 1] = tmp;
 	}
-
 }
