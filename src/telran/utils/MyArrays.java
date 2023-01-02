@@ -1,7 +1,6 @@
 package telran.utils;
 
 import java.util.Comparator;
-import java.util.function.Predicate;
 
 public class MyArrays {
 	public static <T> int binarySearch(T[] array, T searchedObj, Comparator<T> comp) {

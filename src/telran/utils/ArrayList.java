@@ -1,12 +1,36 @@
 package telran.utils;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
+
+	private class ArrayListIterator implements Iterator<T> {
+		public int current = 0;
+		
+		@Override
+		public boolean hasNext() {
+			return current < size;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return get(current++);
+		}
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new ArrayListIterator();
+	}
 
 	public ArrayList() {
 		this(DEFAULT_CAPACITY);
@@ -65,14 +89,13 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		boolean res = false;
+		int earlySize = size;
 		for (int i = 0; i < size; i++) {
 			if (predicate.test(get(i))) {
 				removeElement(i--);
-				res = true;
 			}
 		}
-		return res;
+		return earlySize > size;
 	}
 
 	private void removeElement(int index) {
@@ -153,5 +176,4 @@ public class ArrayList<T> implements List<T> {
 			throw new IndexOutOfBoundsException(String.format("IndexOutOfBounds %d but size %d", index, size));
 		}
 	}
-
 }
