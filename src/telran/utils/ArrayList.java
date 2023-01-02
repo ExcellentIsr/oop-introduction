@@ -12,7 +12,7 @@ public class ArrayList<T> implements List<T> {
 
 	private class ArrayListIterator implements Iterator<T> {
 		public int current = 0;
-		
+
 		@Override
 		public boolean hasNext() {
 			return current < size;
@@ -89,14 +89,43 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		int earlySize = size;
-		for (int i = 0; i < size; i++) {
-			if (predicate.test(get(i))) {
-				removeElement(i--);
+		int lowInd = 0;
+		int highInd = size() - 1;
+		int oldSize = size();
+		int helper = 0;
+		
+		while (lowInd <= highInd) {
+			if (predicate.test(get(lowInd))) {
+				if (!predicate.test(get(highInd))) {
+					swap(lowInd++, highInd--);
+				} else {
+					array[highInd--] = null;
+				}
+				helper++;
+			} else {
+				lowInd++;
 			}
 		}
-		return earlySize > size;
+		
+		size -= helper;
+		return oldSize > size();
 	}
+	
+	private void swap(int i, int j) {
+		array[i] = array[j];
+		array[j] = null;
+	}
+	
+//	@Override
+//	public boolean removeIf(Predicate<T> predicate) {
+//		int earlySize = size;
+//		for (int i = 0; i < size; i++) {
+//			if (predicate.test(get(i))) {
+//				removeElement(i--);
+//			}
+//		}
+//		return earlySize > size;
+//	}
 
 	private void removeElement(int index) {
 		size--;
