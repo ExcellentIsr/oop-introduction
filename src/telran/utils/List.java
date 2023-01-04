@@ -8,4 +8,14 @@ public interface List<T> extends Collection<T> {
 	int lastIndexOf(T pattern);
 	T get(int index);
 	void set(int index, T element);
+	default void checkIndex(int index, int min, int max) {
+		if (index < min || index > max) {
+			throw new IndexOutOfBoundsException(index);
+		}
+		
+	}
+	@Override
+	default boolean contains(T pattern) {
+		return indexOf(pattern) > -1;
+	}
 }

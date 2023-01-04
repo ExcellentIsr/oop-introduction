@@ -36,7 +36,7 @@ public abstract class CollectionTest {
 
 	@Test
 	void testRemoveIf() {
-		Integer[] expected = { 15, -5 };
+		Integer[] expected = { -5, 15 };
 		assertTrue(collection.removeIf(n -> n % 2 == 0));
 		assertArrayEquals(expected, collection.toArray(empty));
 		assertFalse(collection.removeIf(n -> n % 2 == 0));

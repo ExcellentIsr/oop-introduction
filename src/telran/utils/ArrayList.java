@@ -43,7 +43,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean add(T element) {
-		if (size == array.length) {
+		if (size() == array.length) {
 			reallocate();
 		}
 		array[size++] = element;
@@ -52,8 +52,8 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public void add(int index, T element) {
-		checkIndex(index);
-		if (size == array.length) {
+		checkIndex(index, 0, size());
+		if (size() == array.length) {
 			reallocate();
 		}
 		System.arraycopy(array, index, array, index + 1, size - index);
@@ -81,7 +81,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		checkIndex(index);
+		checkIndex(index, 0, size());
 		T res = get(index);
 		removeElement(index);
 		return res;
@@ -89,31 +89,18 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		int lowInd = 0;
-		int highInd = size() - 1;
-		int oldSize = size();
-		int helper = 0;
-		
-		while (lowInd <= highInd) {
-			if (predicate.test(get(lowInd))) {
-				if (!predicate.test(get(highInd))) {
-					swap(lowInd++, highInd--);
-				} else {
-					array[highInd--] = null;
-				}
-				helper++;
+		int oldSize = size;
+		int tIndex = 0;
+		for (int i = 0; i < oldSize; i++) {
+			if (predicate.test(array[i])) {
+				size--;
 			} else {
-				lowInd++;
+				array[tIndex++] = array[i];
 			}
 		}
+		Arrays.fill(array, size, oldSize, null);
+		return oldSize > size;
 		
-		size -= helper;
-		return oldSize > size();
-	}
-	
-	private void swap(int i, int j) {
-		array[i] = array[j];
-		array[j] = null;
 	}
 	
 //	@Override
@@ -130,13 +117,13 @@ public class ArrayList<T> implements List<T> {
 	private void removeElement(int index) {
 		size--;
 		set(index, null);
-		System.arraycopy(array, index + 1, array, index, size - index);
-		set(size, null);
+		System.arraycopy(array, index + 1, array, index, size() - index);
+		set(size(), null);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return size == 0 ? true : false;
+		return size() == 0 ? true : false;
 	}
 
 	@Override
@@ -150,7 +137,7 @@ public class ArrayList<T> implements List<T> {
 		while (i < size && !pattern.equals(get(i))) {
 			i++;
 		}
-		return i < size;
+		return i < size();
 	}
 
 	@Override
@@ -181,7 +168,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public int lastIndexOf(T pattern) {
-		int i = size - 1;
+		int i = size() - 1;
 		while (i >= 0 && !pattern.equals(get(i))) {
 			i--;
 		}
@@ -190,19 +177,13 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
-		checkIndex(index);
+		checkIndex(index, 0, size());
 		return array[index];
 	}
 
 	@Override
 	public void set(int index, T element) {
-		checkIndex(index);
+		checkIndex(index, 0, size());
 		array[index] = element;
-	}
-
-	private void checkIndex(int index) {
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException(String.format("IndexOutOfBounds %d but size %d", index, size));
-		}
 	}
 }
