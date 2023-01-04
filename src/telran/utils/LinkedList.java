@@ -25,7 +25,7 @@ public class LinkedList<T> implements List<T> {
 
 		@Override
 		public boolean hasNext() {
-			return current.next != null;
+			return current != null;
 		}
 
 		@Override
@@ -33,8 +33,9 @@ public class LinkedList<T> implements List<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			T res = current.obj;
 			current = current.next;
-			return current.prev.obj;
+			return res;
 		}
 
 	}
