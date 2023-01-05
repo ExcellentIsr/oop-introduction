@@ -152,7 +152,7 @@ public class LinkedList<T> implements List<T> {
 		int index = indexOf(pattern);
 		boolean res = index > -1;
 		if (res) {
-			remove(indexOf(pattern));
+			remove(index);
 		}
 		return res;
 	}
