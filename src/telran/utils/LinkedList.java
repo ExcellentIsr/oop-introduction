@@ -180,12 +180,8 @@ public class LinkedList<T> implements List<T> {
 	}
 
 	private void removeHead(Node<T> current) {
-		if (size == 1) {
-			head = tail = null;
-		} else {
-			head = current.next;
-			head.prev = null;
-		}
+		head = current.next;
+		head.prev = null;
 	}
 
 	private void removeTail(Node<T> current) {
