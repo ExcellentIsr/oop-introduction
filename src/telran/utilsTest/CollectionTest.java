@@ -98,16 +98,4 @@ public abstract class CollectionTest {
 		it1.remove();
 		assertFalse(collection.contains(num));
 	}
-
-	@Test
-	void hasLoopTest() {
-		LinkedList<Integer> list1 = new LinkedList<>();
-		Integer[] numbers = { 10, 100, -5, 134, 280, 120, 15 };
-		for (Integer num : numbers) {
-			list1.add(num);
-		}
-		assertFalse(list1.hasLoop());
-		list1.setNext(2, 1);
-		assertTrue(list1.hasLoop());
-	}
 }
