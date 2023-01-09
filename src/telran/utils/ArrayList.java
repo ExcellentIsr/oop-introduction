@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 	static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
-	private int size;
 
 	private class ArrayListIterator implements Iterator<T> {
-		public int current = 0;
+		int current = 0;
+		boolean flNext = false;
 
 		@Override
 		public boolean hasNext() {
@@ -23,7 +23,18 @@ public class ArrayList<T> implements List<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			flNext = true;
 			return get(current++);
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			T removeElement = get(current - 1);
+			ArrayList.this.remove(removeElement);
+			flNext = false;
 		}
 	}
 
@@ -100,19 +111,8 @@ public class ArrayList<T> implements List<T> {
 		}
 		Arrays.fill(array, size, oldSize, null);
 		return oldSize > size;
-		
+
 	}
-	
-//	@Override
-//	public boolean removeIf(Predicate<T> predicate) {
-//		int earlySize = size;
-//		for (int i = 0; i < size; i++) {
-//			if (predicate.test(get(i))) {
-//				removeElement(i--);
-//			}
-//		}
-//		return earlySize > size;
-//	}
 
 	private void removeElement(int index) {
 		size--;
@@ -122,34 +122,12 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return size() == 0 ? true : false;
-	}
-
-	@Override
-	public int size() {
-		return size;
-	}
-
-	@Override
 	public boolean contains(T pattern) {
 		int i = 0;
 		while (i < size && !pattern.equals(get(i))) {
 			i++;
 		}
 		return i < size();
-	}
-
-	@Override
-	public T[] toArray(T[] ar) {
-		if (ar.length >= size) {
-			System.arraycopy(array, 0, ar, 0, size);
-			Arrays.fill(ar, size, ar.length, null);
-		} else {
-			ar = Arrays.copyOf(array, size);
-		}
-
-		return ar;
 	}
 
 	@Override

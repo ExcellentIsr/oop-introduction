@@ -31,28 +31,28 @@ public abstract class ListTest extends CollectionTest {
 	@Test
 	@Override
 	void testIterator() {
-	    Integer actual[] = new Integer[numbers.length];
-	    int index = 0;
-	    Iterator<Integer> it = list.iterator();
-	    while(it.hasNext()) {
-	      actual[index++] = it.next();
-	    }
-	    assertArrayEquals(numbers, actual);
-	    assertThrowsExactly(NoSuchElementException.class, () -> it.next());
-	    
-	    index = 0;
-	    for(Integer element : list) {
-	    	assertEquals(numbers[index++], element);
-	    }
-	  }
-	
+		Integer actual[] = new Integer[numbers.length];
+		int index = 0;
+		Iterator<Integer> it = list.iterator();
+		while (it.hasNext()) {
+			actual[index++] = it.next();
+		}
+		assertArrayEquals(numbers, actual);
+		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
+
+		index = 0;
+		for (Integer element : list) {
+			assertEquals(numbers[index++], element);
+		}
+	}
+
 	@Test
 	void testAddInt() {
 		Integer[] expected1 = { 10, 100, -5, 100, 134, 280, 120, 15 };
 		Integer[] expected2 = { 8, 10, 100, -5, 100, 134, 280, 120, 15 };
 		Integer[] expected3 = { 8, 10, 100, -5, 100, 134, 280, 120, 15, 200 };
 
-		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(1000,1000));
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(1000, 1000));
 		list.add(3, 100);
 		assertArrayEquals(expected1, list.toArray(empty));
 		list.add(0, 8);
