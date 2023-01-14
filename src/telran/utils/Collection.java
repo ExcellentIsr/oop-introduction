@@ -31,15 +31,16 @@ public interface Collection<T> extends Iterable<T> {
 	boolean contains(T pattern);
 
 	default T[] toArray(T[] ar) {
-		if (ar.length < size()) {
-			ar = Arrays.copyOf(ar, size());
+		int size = size();
+		if (ar.length < size) {
+			ar = Arrays.copyOf(ar, size);
 		}
 		Iterator<T> it = iterator();
 		int i = 0;
 		while (it.hasNext()) {
 			ar[i++] = it.next();
 		}
-		Arrays.fill(ar, size(), ar.length, null);
+		Arrays.fill(ar, size, ar.length, null);
 
 		return ar;
 	}
