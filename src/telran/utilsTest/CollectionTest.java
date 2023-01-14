@@ -28,26 +28,31 @@ public abstract class CollectionTest {
 	}
 
 	abstract void testAdd();
-
 	abstract void testIterator();
 
 	@Test
 	void testRemove() {
 		Integer[] expected = { 10, 100, -5, 280, 120, 15 };
+		Arrays.sort(expected);
+		
 		assertTrue(collection.remove((Integer) 134));
-		assertArrayEquals(expected, collection.toArray(empty));
+
+		Integer[] array = collection.toArray(empty);
+		Arrays.sort(array);
+		
+		assertArrayEquals(expected, array);
 		assertFalse(collection.remove((Integer) 134));
 	}
 
 	@Test
 	void testRemoveIf() {
 		Integer[] expected = { -5, 15 };
+		
 		assertTrue(collection.removeIf(n -> n % 2 == 0));
 		assertArrayEquals(expected, collection.toArray(empty));
 		assertFalse(collection.removeIf(n -> n % 2 == 0));
 		assertTrue(collection.removeIf(n -> true));
 		assertTrue(collection.isEmpty());
-
 	}
 
 	@Test
@@ -72,6 +77,8 @@ public abstract class CollectionTest {
 	void testToArray() {
 		Arrays.fill(ar, 10);
 		assertTrue(ar == collection.toArray(ar));
+		Arrays.sort(numbers);
+		Arrays.sort(ar, 0, numbers.length);
 		for (int i = 0; i < numbers.length; i++) {
 			assertEquals(ar[i], numbers[i]);
 		}
@@ -88,8 +95,8 @@ public abstract class CollectionTest {
 		assertTrue(collection.contains(num));
 		it.remove();
 		assertFalse(collection.contains(num));
-
 		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
+		
 		Iterator<Integer> it1 = collection.iterator();
 		while (it1.hasNext()) {
 			num = it1.next();

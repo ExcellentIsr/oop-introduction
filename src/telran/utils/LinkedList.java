@@ -113,13 +113,10 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 			step = step.next;
 			step2 = step2.next.next;
 
-			if (step == step2) {
-				res = true;
-			}
+			res = step == step2;
 		}
 		return res;
 	}
-
 	/*********************************************************************************************/
 
 	@Override

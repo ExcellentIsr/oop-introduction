@@ -24,7 +24,7 @@ public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 				throw new NoSuchElementException();
 			}
 			flNext = true;
-			return get(current++);
+			return array[current++];
 		}
 
 		@Override
@@ -32,8 +32,7 @@ public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 			if (!flNext) {
 				throw new IllegalStateException();
 			}
-			T removeElement = get(current - 1);
-			ArrayList.this.remove(removeElement);
+			ArrayList.this.remove(--current);
 			flNext = false;
 		}
 	}
