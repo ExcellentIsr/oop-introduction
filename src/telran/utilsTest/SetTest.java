@@ -40,5 +40,15 @@ public abstract class SetTest extends CollectionTest {
 		for(i = 0; i < array.length; i++) {
 			assertEquals(numbers[i], array[i]);
 		}
+		
+		Integer num;
+		Iterator<Integer> it = set.iterator();
+		
+		for (int j = 0; j < 2; j++) {
+			num = it.next();
+			assertTrue(collection.contains(num));
+			it.remove();
+			assertFalse(collection.contains(num));
+		}
 	}
 }
