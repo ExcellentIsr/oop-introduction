@@ -25,30 +25,17 @@ public abstract class SetTest extends CollectionTest {
 		assertTrue(set.add(Integer.MAX_VALUE));
 		assertFalse(set.add(Integer.MAX_VALUE));
 	}
-	
+
 	@Override
 	@Test
 	void testIterator() {
-		Integer[] array = new Integer [numbers.length];
+		Integer[] array = new Integer[numbers.length];
 		int i = 0;
-		Iterator<Integer> it1 = set.iterator();
-		while (it1.hasNext()) {
-			array[i++] = it1.next();
+		for (Integer item : set) {
+			array[i++] = item;
 		}
 		Arrays.sort(numbers);
 		Arrays.sort(array);
-		for(i = 0; i < array.length; i++) {
-			assertEquals(numbers[i], array[i]);
-		}
-		
-		Integer num;
-		Iterator<Integer> it = set.iterator();
-		
-		for (int j = 0; j < 2; j++) {
-			num = it.next();
-			assertTrue(collection.contains(num));
-			it.remove();
-			assertFalse(collection.contains(num));
-		}
+		assertArrayEquals(array, numbers);
 	}
 }

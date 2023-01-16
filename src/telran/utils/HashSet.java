@@ -17,6 +17,7 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 		Iterator<T> itList = null;
 		boolean flNext = false;
 		int oldSIze = size();
+
 		@Override
 		public boolean hasNext() {
 			return current < oldSIze;

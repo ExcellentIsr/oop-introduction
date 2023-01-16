@@ -15,7 +15,8 @@ import org.junit.jupiter.api.Test;
 import telran.utils.*;
 
 public abstract class CollectionTest {
-	protected Integer[] numbers = { 10, 100, -5, 134, 280, 120, 15 };
+	protected Integer[] numbers = { 10, 30, 0, 50, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17,
+			-13, -14 };
 	protected Integer ar[] = new Integer[numbers.length + 100];
 	protected Collection<Integer> collection;
 	protected Integer[] empty = {};
@@ -28,28 +29,31 @@ public abstract class CollectionTest {
 	}
 
 	abstract void testAdd();
+
 	abstract void testIterator();
 
 	@Test
 	void testRemove() {
-		Integer[] expected = { 10, 100, -5, 280, 120, 15 };
+		Integer[] expected = { 10, 30, 0, 50, 20, 5, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17, -13, -14 };
 		Arrays.sort(expected);
-		
-		assertTrue(collection.remove((Integer) 134));
+
+		assertTrue(collection.remove((Integer) 100));
 
 		Integer[] array = collection.toArray(empty);
 		Arrays.sort(array);
-		
+
 		assertArrayEquals(expected, array);
-		assertFalse(collection.remove((Integer) 134));
+		assertFalse(collection.remove((Integer) 100));
 	}
 
 	@Test
 	void testRemoveIf() {
-		Integer[] expected = { -5, 15 };
-		
+		Integer[] expected = { 3, 5, -5, 7, -11, -13, 15, -15, -17, 25, -9 };
+		Arrays.sort(expected);
 		assertTrue(collection.removeIf(n -> n % 2 == 0));
-		assertArrayEquals(expected, collection.toArray(empty));
+		Integer[] ggwp = collection.toArray(empty);
+		Arrays.sort(ggwp);
+		assertArrayEquals(expected, ggwp);
 		assertFalse(collection.removeIf(n -> n % 2 == 0));
 		assertTrue(collection.removeIf(n -> true));
 		assertTrue(collection.isEmpty());
@@ -96,7 +100,7 @@ public abstract class CollectionTest {
 		it.remove();
 		assertFalse(collection.contains(num));
 		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
-		
+
 		Iterator<Integer> it1 = collection.iterator();
 		while (it1.hasNext()) {
 			num = it1.next();

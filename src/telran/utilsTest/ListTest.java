@@ -48,9 +48,12 @@ public abstract class ListTest extends CollectionTest {
 
 	@Test
 	void testAddInt() {
-		Integer[] expected1 = { 10, 100, -5, 100, 134, 280, 120, 15 };
-		Integer[] expected2 = { 8, 10, 100, -5, 100, 134, 280, 120, 15 };
-		Integer[] expected3 = { 8, 10, 100, -5, 100, 134, 280, 120, 15, 200 };
+		Integer[] expected1 = { 10, 30, 0, 100, 50, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17,
+				-13, -14 };
+		Integer[] expected2 = { 8, 10, 30, 0, 100, 50, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11,
+				-17, -13, -14 };
+		Integer[] expected3 = { 8, 10, 30, 0, 100, 50, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11,
+				-17, -13, -14, 200 };
 
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(1000, 1000));
 		list.add(3, 100);
@@ -63,15 +66,15 @@ public abstract class ListTest extends CollectionTest {
 
 	@Test
 	void testRemoveInt() {
-		Integer[] expected1 = { 10, 100, -5, 280, 120, 15 };
-		Integer[] expected2 = { 100, -5, 280, 120, 15 };
-		Integer[] expected3 = { 100, -5, 280, 120 };
+		Integer[] expected1 = { 10, 30, 0, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17, -13, -14 };
+		Integer[] expected2 = { 30, 0, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17, -13, -14 };
+		Integer[] expected3 = { 30, 0, 20, 5, 100, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17, -13 };
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.remove(1000));
-		assertEquals(134, list.remove(3));
+		assertEquals(50, list.remove(3));
 		assertArrayEquals(expected1, list.toArray(empty));
 		assertEquals(10, list.remove(0));
 		assertArrayEquals(expected2, list.toArray(empty));
-		assertEquals(15, list.remove(list.size() - 1));
+		assertEquals(-14, list.remove(list.size() - 1));
 		assertArrayEquals(expected3, list.toArray(empty));
 	}
 
@@ -86,6 +89,7 @@ public abstract class ListTest extends CollectionTest {
 	@Test
 	void testLastIndexOf() {
 		list.add(3, 134);
+		list.add(4, 134);
 		assertEquals(3, list.indexOf(134));
 		assertEquals(4, list.lastIndexOf(134));
 		assertEquals(-1, list.lastIndexOf(Integer.MAX_VALUE));
