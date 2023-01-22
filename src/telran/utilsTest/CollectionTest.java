@@ -34,16 +34,20 @@ public abstract class CollectionTest {
 
 	@Test
 	void testRemove() {
-		Integer[] expected = { 10, 30, 0, 50, 20, 5, 15, 40, 25, 3, -10, -9, 7, -18, -5, -15, -12, -11, -17, -13, -14 };
+		Integer[] expected = { 10, 30, 0, 50, 20, 5, 15, 40, 25, 3, -9, 7, -18, -5, -12, -11, -17, -13, -14 };
 		Arrays.sort(expected);
 
 		assertTrue(collection.remove((Integer) 100));
+		assertTrue(collection.remove((Integer) (-10)));
+		assertTrue(collection.remove((Integer) (-15)));
 
 		Integer[] array = collection.toArray(empty);
 		Arrays.sort(array);
 
 		assertArrayEquals(expected, array);
 		assertFalse(collection.remove((Integer) 100));
+		assertFalse(collection.remove((Integer) (-10)));
+		assertFalse(collection.remove((Integer) (-15)));
 	}
 
 	@Test
@@ -93,9 +97,13 @@ public abstract class CollectionTest {
 
 	@Test
 	void removeIteratorTest() {
+		Integer num = 0;
+
 		Iterator<Integer> it = collection.iterator();
 		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
-		Integer num = it.next();
+		for (int i = 0; i < 18; i++) {
+			num = it.next();
+		}
 		assertTrue(collection.contains(num));
 		it.remove();
 		assertFalse(collection.contains(num));
