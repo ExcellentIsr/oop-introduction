@@ -37,23 +37,12 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			fl = true;
 			Node<T> res = currentNode;
 			prev = currentNode;
 
 			currentNode = setNextNode(currentNode);
-			fl = true;
 			return res.obj;
-		}
-
-		private Node<T> setNextNode(Node<T> current) {
-			return current.right == null ? getGreaterParent(current) : lowestElement(current.right);
-		}
-
-		private Node<T> getGreaterParent(Node<T> current) {
-			while (current.parent != null && current.parent.left != current) {
-				current = current.parent;
-			}
-			return current.parent;
 		}
 
 		@Override
@@ -61,12 +50,17 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 			if (!fl) {
 				throw new IllegalStateException();
 			}
-			TreeSet.this.remove(prev.obj);
-
 			fl = false;
+			if (isJunction(prev)) {
+				currentNode = prev;
+			}
+			removeNode(prev);
 		}
 
 	}
+
+	private static final String SYMBOL = " ";
+	private static final int NUMBER_SYMBOLS_PER_LEVEL = 3;
 
 	private Node<T> root;
 	private Comparator<T> comp;
@@ -78,6 +72,17 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	@SuppressWarnings("unchecked")
 	public TreeSet() {
 		this((Comparator<T>) Comparator.naturalOrder());
+	}
+
+	private Node<T> setNextNode(Node<T> current) {
+		return current.right == null ? getGreaterParent(current) : lowestElement(current.right);
+	}
+
+	private Node<T> getGreaterParent(Node<T> current) {
+		while (current.parent != null && current.parent.left != current) {
+			current = current.parent;
+		}
+		return current.parent;
 	}
 
 	private Node<T> lowestElement(Node<T> currentNode) {
@@ -157,44 +162,46 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 		Node<T> current = getNode(pattern);
 		boolean res = false;
 		if (current != null && comp.compare(current.obj, pattern) == 0) {
-			if (current.left != null && current.right != null) {
-				Node<T> node = lowestElement(current.right);
-				current.obj = node.obj;
-				removeCurrentNode(node);
-			} else {
-				removeCurrentNode(current);
-			}
+			removeNode(current);
 			res = true;
 		}
 		return res;
 	}
 
-	private void removeCurrentNode(Node<T> current) {
+	private void removeNode(Node<T> current) {
+		if (isJunction(current)) {
+			removeNodeJunction(current);
+		} else {
+			removeNodeNonJunction(current);
+		}
+	}
+
+	private boolean isJunction(Node<T> node) {
+		return node.left != null && node.right != null;
+	}
+
+	private void removeNodeJunction(Node<T> current) {
+		Node<T> node = lowestElement(current.right);
+		current.obj = node.obj;
+		removeNodeNonJunction(node);
+	}
+
+	private void removeNodeNonJunction(Node<T> current) {
+		Node<T> parent = current.parent;
 		Node<T> child = current.left != null ? current.left : current.right;
+		if (parent == null) {
+			root = child;
+		} else {
+			if (parent.left == current) {
+				parent.left = child;
+			} else {
+				parent.right = child;
+			}
+		}
 		if (child != null) {
 			child.parent = current.parent;
 		}
-		if (current.parent == null) {
-			removeRoot(child);
-		} else {
-			if (comp.compare(current.obj, current.parent.obj) < 0) {
-				current.parent.left = child;
-			} else {
-				current.parent.right = child;
-			}
-		}
-		current.parent = null;
-		current.left = null;
-		current.right = null;
 		size--;
-	}
-
-	private void removeRoot(Node<T> child) {
-		if (size == 1) {
-			root = null;
-		} else {
-			root = child;
-		}
 	}
 
 	@Override
@@ -221,36 +228,25 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 
 	@Override
 	public T floor(T element) {
-		Iterator<T> it = iterator();
-		boolean fl = false;
-		T current = null;
-		T prev = null;
-
-		while (!fl && it.hasNext()) {
-			current = it.next();
-			if (comp.compare(current, element) > 0) {
-				fl = true;
-			}
-			if (!fl)
-				prev = current;
-		}
-
-		return prev;
+		return floorCeiling(element, true);
 	}
 
 	@Override
 	public T ceiling(T element) {
-		Iterator<T> it = iterator();
-		T res = null;
-		T current = null;
-		while (res == null && it.hasNext()) {
-			current = it.next();
-			if (comp.compare(current, element) >= 0) {
-				res = current;
-			}
-		}
+		return floorCeiling(element, false);
+	}
 
-		return res;
+	private T floorCeiling(T pattern, boolean isFloor) {
+		T res = null;
+		int compRes = 0;
+		Node<T> current = root;
+		while (current != null && (compRes = comp.compare(pattern, current.obj)) != 0) {
+			if ((compRes < 0 && !isFloor) || (compRes > 0 && isFloor)) {
+				res = current.obj;
+			}
+			current = compRes < 0 ? current.left : current.right;
+		}
+		return current == null ? res : current.obj;
 	}
 
 	@Override
@@ -261,5 +257,103 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	@Override
 	public T last() {
 		return root != null ? largestElement(root).obj : null;
+	}
+
+	public void displayTreeRotated() {
+		displayTreeRotated(root, 0);
+	}
+
+	private void displayTreeRotated(Node<T> root, int level) {
+		if (root != null) {
+			displayTreeRotated(root.right, level + 1);
+			displayRoot(root, level);
+			displayTreeRotated(root.left, level + 1);
+		}
+	}
+
+	private void displayRoot(Node<T> root, int level) {
+		System.out.printf("%s%s\n", SYMBOL.repeat(NUMBER_SYMBOLS_PER_LEVEL * level), root.obj);
+	}
+
+	public int height() {
+		return height(root);
+	}
+
+	public int height(Node<T> root) {
+		int res = 0;
+
+		if (root != null) {
+			int heightRight = height(root.right);
+			int heightLeft = height(root.left);
+			res = Math.max(heightRight, heightLeft) + 1;
+		}
+
+		return res;
+	}
+
+	public int width() {
+		return width(root);
+	}
+
+	private int width(Node<T> root) {
+		int res = 0;
+		if (root != null) {
+			if (root.left == null && root.right == null) {
+				res++;
+			} else {
+				res = width(root.left) + width(root.right);
+			}
+		}
+
+		return res;
+	}
+
+	public void inversion() {
+		inversion(root);
+		comp = comp.reversed();
+	}
+
+	private void inversion(Node<T> root) {
+		if (root != null) {
+			inversion(root.left);
+			inversion(root.right);
+			swap(root);
+		}
+	}
+
+	private void swap(Node<T> root) {
+		Node<T> container = root.left;
+		root.left = root.right;
+		root.right = container;
+	}
+
+	public void balance() {
+		Node<T>[] array = getNodesArray();
+		root = balance(array, 0, array.length - 1, null);
+	}
+
+	private Node<T> balance(Node<T>[] array, int left, int right, Node<T> parent) {
+		Node<T> root = null;
+		if (left <= right) {
+			final int rootIndex = (left + right) / 2;
+			root = array[rootIndex];
+			root.parent = parent;
+			root.left = balance(array, left, rootIndex - 1, root);
+			root.right = balance(array, rootIndex + 1, right, root);
+		}
+		return root;
+	}
+
+	private Node<T>[] getNodesArray() {
+		Node<T>[] res = new Node[size];
+		int index = 0;
+		if (root != null) {
+			Node<T> current = lowestElement(root);
+			while (current != null) {
+				res[index++] = current;
+				current = setNextNode(current);
+			}
+		}
+		return res;
 	}
 }

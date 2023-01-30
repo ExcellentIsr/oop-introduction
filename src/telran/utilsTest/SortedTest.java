@@ -3,6 +3,8 @@ package telran.utilsTest;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import telran.utils.Sorted;
 
 public abstract class SortedTest extends SetTest {
+	protected static final int N_ELEMNTS = 100000;
+	protected static final int N_RUNS = 10000;
+	private Random gen = new Random();
 	Sorted<Integer> sorted;
 
 	@Override
@@ -59,5 +64,21 @@ public abstract class SortedTest extends SetTest {
 	@Test
 	void lastTest() {
 		assertEquals((Integer) 100, sorted.last());
+	}
+
+	protected void runPerformanceTest(Sorted<Integer> sorted) {
+
+		for (int i = 0; i < N_RUNS; i++) {
+			sorted.floor(gen.nextInt());
+		}
+	}
+
+	protected abstract Sorted<Integer> getSortedCollection();
+
+	@Test
+	void performanceTestRandomAdding() {
+		Sorted<Integer> sorted = getSortedCollection();
+		IntStream.range(0, N_ELEMNTS).forEach(x -> sorted.add(gen.nextInt()));
+		runPerformanceTest(sorted);
 	}
 }

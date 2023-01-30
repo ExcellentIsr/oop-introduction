@@ -10,4 +10,9 @@ public class StandardTreeSetTest extends SortedTest {
 		collection = new StandardTreeSet<Integer>();
 		super.setUp();
 	}
+
+	@Override
+	protected Sorted<Integer> getSortedCollection() {
+		return new StandardTreeSet<Integer>();
+	}
 }
