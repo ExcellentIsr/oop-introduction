@@ -59,6 +59,8 @@ public interface Collection<T> extends Iterable<T> {
 	default T[] toArrayShuffling(T[] array) {
 		T[] ar = toArray(array);
 		int size = size();
-		return (new Random().ints(0, size).distinct().limit(size)).mapToObj(n -> ar[n]).toArray(n -> ar);
+		return (new Random().ints(0, size).distinct().limit(size))
+				.mapToObj(n -> ar[n])
+				.toArray(n -> ar);
 	}
 }
