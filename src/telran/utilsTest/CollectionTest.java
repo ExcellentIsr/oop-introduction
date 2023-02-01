@@ -117,4 +117,11 @@ public abstract class CollectionTest {
 		it1.remove();
 		assertFalse(collection.contains(num));
 	}
+	@Test
+	void toArrayShufflingTest() {
+		Integer[] array = collection.toArrayShuffling(empty);
+		for(Integer element : array) {
+			System.out.print(element + ", ");
+		}
+	}
 }

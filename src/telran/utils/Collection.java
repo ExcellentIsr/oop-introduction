@@ -2,7 +2,10 @@ package telran.utils;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.function.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public interface Collection<T> extends Iterable<T> {
 
@@ -43,5 +46,19 @@ public interface Collection<T> extends Iterable<T> {
 		Arrays.fill(ar, size, ar.length, null);
 
 		return ar;
+	}
+
+	default Stream<T> stream() {
+		return StreamSupport.stream(this.spliterator(), false);
+	}
+
+	default Stream<T> parallelStream() {
+		return StreamSupport.stream(this.spliterator(), true);
+	}
+
+	default T[] toArrayShuffling(T[] array) {
+		T[] ar = toArray(array);
+		int size = size();
+		return (new Random().ints(0, size).distinct().limit(size)).mapToObj(n -> ar[n]).toArray(n -> ar);
 	}
 }

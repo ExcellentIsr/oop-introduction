@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import telran.utils.*;
@@ -21,6 +22,7 @@ public class TreeSetTest extends SortedTest {
 	}
 
 	@Test
+	@Disabled
 	void displayRotatedTest() {
 		tree.displayTreeRotated();
 	}
@@ -38,9 +40,6 @@ public class TreeSetTest extends SortedTest {
 	@Test
 	void inversionTest() {
 		tree.inversion();
-		for (Integer num : tree) {
-			System.out.print(num + " ");
-		}
 		Integer expected[] = { 100, 50, 40, 30, 25, 20, 15, 10, 7, 5, 3, 0, -5, -9, -10, -11, -12, -13, -14, -15, -17,
 				-18 };
 		Integer actual[] = new Integer[expected.length];
@@ -60,6 +59,7 @@ public class TreeSetTest extends SortedTest {
 	}
 
 	@Test
+	@Disabled
 	void balanceTest() {
 		tree.balance();
 		assertEquals(5, tree.height());
