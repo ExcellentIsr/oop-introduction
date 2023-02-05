@@ -44,9 +44,9 @@ public class TreeSetTest extends SortedTest {
 				-18 };
 		Integer actual[] = new Integer[expected.length];
 
-		int index = 0;
+		int ind = 0;
 		for (Integer num : tree) {
-			actual[index++] = num;
+			actual[ind++] = num;
 		}
 
 		assertArrayEquals(expected, actual);

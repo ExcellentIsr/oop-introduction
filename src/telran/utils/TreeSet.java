@@ -345,15 +345,15 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 
 	private Node<T>[] getNodesArray() {
-		Node<T>[] res = new Node[size];
+		Node<T>[] result = new Node[size];
 		int index = 0;
 		if (root != null) {
 			Node<T> current = lowestElement(root);
 			while (current != null) {
-				res[index++] = current;
+				result[index++] = current;
 				current = setNextNode(current);
 			}
 		}
-		return res;
+		return result;
 	}
 }
