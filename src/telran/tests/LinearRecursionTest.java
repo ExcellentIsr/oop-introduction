@@ -3,7 +3,11 @@ package telran.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static telran.LinearRecursion.*;
 
+import java.lang.reflect.Array;
+
 import org.junit.jupiter.api.Test;
+
+import telran.MdArray;
 
 public class LinearRecursionTest {
 	@Test
@@ -75,5 +79,19 @@ public class LinearRecursionTest {
 		reverse(ar1);
 		assertArrayEquals(expected, ar);
 		assertArrayEquals(expected1, ar1);
+	}
+	
+	@Test
+	void MdArrayTest() {
+		int[] ar = {3,2,2};
+		MdArray<Integer> arrayInt = new MdArray<Integer>(ar, 50);
+		Integer[] sum = {0};
+		arrayInt.forEach(n -> assertEquals(50, n));
+		arrayInt.set(new int[] {2,1,1}, 55);
+		
+		arrayInt.forEach(n -> sum[0] += n);
+		assertEquals(605, sum[0]);
+		assertEquals(50, arrayInt.get(new int[] {2,1,0}));
+		assertEquals(55, arrayInt.get(new int[] {2,1,1}));
 	}
 }
