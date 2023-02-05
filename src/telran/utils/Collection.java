@@ -60,7 +60,7 @@ public interface Collection<T> extends Iterable<T> {
 		T[] ar = toArray(array);
 		int size = size();
 		return (new Random().ints(0, size).distinct().limit(size))
-				.mapToObj(n -> ar[n])
-				.toArray(n -> ar);
+				.mapToObj(x -> ar[x])
+				.toArray(x -> ar);
 	}
 }

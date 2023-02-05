@@ -120,8 +120,8 @@ public abstract class CollectionTest {
 	@Test
 	void toArrayShufflingTest() {
 		Integer[] array = collection.toArrayShuffling(empty);
-		for(Integer element : array) {
-			System.out.print(element + ", ");
+		for(Integer item : array) {
+			System.out.print(item + ", ");
 		}
 	}
 }
