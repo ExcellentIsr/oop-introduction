@@ -345,6 +345,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 
 	private Node<T>[] getNodesArray() {
+		@SuppressWarnings("unchecked")
 		Node<T>[] result = new Node[size];
 		int index = 0;
 		if (root != null) {
@@ -355,5 +356,15 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public T get(T pattern) {
+		T res = floor(pattern);
+		if(!isEqual(res, pattern)) {
+			res = null;
+		}
+		
+		return res;
 	}
 }

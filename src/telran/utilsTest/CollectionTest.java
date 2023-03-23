@@ -30,7 +30,18 @@ public abstract class CollectionTest {
 
 	abstract void testAdd();
 
-	abstract void testIterator();
+	@Test
+	void testIterator() {
+		Integer[] actual = new Integer[numbers.length];
+		
+		int ind = 0;
+		Iterator<Integer> it = collection.iterator();
+		while(it.hasNext()) {
+			actual[ind++] = it.next();
+		}
+		
+		assertArrayEquals(numbers, actual);
+	};
 
 	@Test
 	void testRemove() {
